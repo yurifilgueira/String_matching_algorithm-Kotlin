@@ -21,7 +21,7 @@ class DatasetReader {
             val matches: MutableMap<String, Int> = HashMap()
 
             try {
-                Files.newBufferedReader(Paths.get(PATH)).use { br ->
+                Files.newBufferedReader(PATH?.let { Paths.get(it) }).use { br ->
                     var counter = 0
                     var line: String?
                     while ((br.readLine().also { line = it }) != null) {
