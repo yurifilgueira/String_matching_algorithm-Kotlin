@@ -1,3 +1,4 @@
+
 package util
 
 import java.io.IOException
@@ -7,19 +8,16 @@ import java.nio.file.Paths
 object ResultSaver {
     private const val PATH = "resources\\results.txt"
 
-    fun save(matches: Map<String, Int>) {
+    fun save(cout: Int, cout1: Int) {
         try {
             Files.newBufferedWriter(Paths.get(PATH)).use { bw ->
                 bw.write("Quantity of matches:")
                 bw.newLine()
-                matches.forEach { (k: String, v: Int) ->
-                    try {
-                        bw.write("$k -> $v")
-                        bw.newLine()
-                    } catch (e: IOException) {
-                        throw RuntimeException(e)
-                    }
-                }
+
+                bw.write(Thread.currentThread().name + cout.toString())
+                bw.newLine()
+                bw.write(Thread.currentThread().name + cout1.toString())
+
             }
         } catch (e: IOException) {
             throw RuntimeException(e)
