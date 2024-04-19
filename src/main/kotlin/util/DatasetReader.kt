@@ -1,39 +1,36 @@
 package util
 
+import kotlinx.coroutines.sync.Mutex
 import util.ResultSaver.save
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.concurrent.ConcurrentHashMap
 
 class DatasetReader {
     private var item: String? = null
     private var item2: String? = null
-    private var matches: ConcurrentHashMap<*, *>? = null
+    private var matches: MutableMap<String, Int>? = null
+    private val mutex = Mutex()
 
     constructor()
 
-    constructor(item: String?, matches: ConcurrentHashMap<*, *>?) {
+    constructor(item: String?, matches: MutableMap<String, Int>?) {
         this.item = item
         this.matches = matches
     }
 
-    constructor(item: String?, item2: String?, matches: ConcurrentHashMap<*, *>?) {
+    constructor(item: String?, item2: String?, matches: MutableMap<String, Int>?) {
         this.item = item
         this.item2 = item2
         this.matches = matches
     }
 
-    private fun readDatasetAndProcess() {
+    private suspend fun readDatasetAndProcess() {
 
-        var count = 0
-        var count1 = 0
         try {
             Files.newBufferedReader(Paths.get(PATH)).use { br ->
                 var counter = 0
                 var line: String?
-                Thread.sleep(1000)
-                println(Thread.currentThread().name + " começou.")
                 while ((br.readLine().also { line = it }) != null) {
                     counter++
                     val arrayRatingLine =
@@ -46,13 +43,21 @@ class DatasetReader {
 
                     if (words != null) {
                         for (word in words) {
-                            if (LevenshteinDistance.calculateDistance(item!!, word) === 0) {
-                                count++
+                            if (LevenshteinDistance.calculateDistance(item!!, word) == 0) {
                                 println("Match: $item - $word")
+
+                                mutex.lock()
+                                matches!![word] = matches!!.getOrDefault(word, 0) + 1
+                                mutex.unlock()
+
                                 break
-                            } else if (LevenshteinDistance.calculateDistance(item2!!, word) === 0) {
-                                count1++
+                            } else if (LevenshteinDistance.calculateDistance(item2!!, word) == 0) {
                                 println("Match: $item2 - $word")
+
+                                mutex.lock()
+                                matches!![word] = matches!!.getOrDefault(word, 0) + 1
+                                mutex.unlock()
+
                                 break
                             }
                         }
@@ -60,7 +65,7 @@ class DatasetReader {
                 }
 
                 println("Count: $counter")
-                save(count, count1)
+                matches?.let { save(it) }
             }
         } catch (e: IOException) {
             throw RuntimeException(e)

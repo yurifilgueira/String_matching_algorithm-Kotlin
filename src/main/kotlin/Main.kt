@@ -4,10 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import util.DatasetReader
-import java.util.concurrent.ConcurrentHashMap
 
 fun main(args: Array<String>) {
-    val PATH = "resources\\train.csv"
 
     val startTime = System.currentTimeMillis()
 
@@ -28,7 +26,7 @@ fun main(args: Array<String>) {
 
     val datasetReaders: MutableList<DatasetReader> = ArrayList()
 
-    val matches: ConcurrentHashMap<String, Int> = ConcurrentHashMap<String, Int>()
+    val matches: MutableMap<String, Int> = HashMap()
     runBlocking {
         var i = 0
         while (i < items.size) {
