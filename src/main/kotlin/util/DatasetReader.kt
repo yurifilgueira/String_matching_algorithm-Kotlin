@@ -26,7 +26,7 @@ class DatasetReader {
                             line?.split(",".toRegex())?.dropLastWhile { it.isEmpty() }
                                 ?.toTypedArray()
                         val rating =
-                            arrayRatingLine?.get(2)?.replace("\"".toRegex(), "")?.lowercase()
+                            arrayRatingLine?.get(2)?.replace("\"".toRegex(), "")?.toLowerCase()
                         val words =
                             rating?.split(" ".toRegex())?.dropLastWhile { it.isEmpty() }
                                 ?.toTypedArray()
