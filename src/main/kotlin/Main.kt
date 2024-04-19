@@ -1,7 +1,6 @@
 import util.DatasetReader
-import java.util.concurrent.ConcurrentHashMap
 
- fun main(args: Array<String>) {
+fun main(args: Array<String>) {
         val PATH = "resources\\train.csv"
 
         val startTime = System.currentTimeMillis()
@@ -23,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap
 
         val threads: MutableList<Thread> = ArrayList()
 
-        val matches: ConcurrentHashMap<String, Int> = ConcurrentHashMap<String, Int>()
+        val matches: MutableMap<String, Int> = HashMap()
 
         var i = 0
         while (i < items.size) {

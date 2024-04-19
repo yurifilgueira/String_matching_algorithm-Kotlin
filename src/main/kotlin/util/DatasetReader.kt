@@ -4,36 +4,34 @@ import util.ResultSaver.save
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
 
 class DatasetReader : Runnable {
+    private val lock: Lock = ReentrantLock()
+
     private var item: String? = null
     private var item2: String? = null
-    private var matches: ConcurrentHashMap<*, *>? = null
+    private var matches: MutableMap<String, Int>? = null
 
     constructor()
 
-    constructor(item: String?, matches: ConcurrentHashMap<*, *>?) {
+    constructor(item: String?, matches: MutableMap<String, Int>?) {
         this.item = item
         this.matches = matches
     }
 
-    constructor(item: String?, item2: String?, matches: ConcurrentHashMap<*, *>?) {
+    constructor(item: String?, item2: String?, matches: MutableMap<String, Int>?) {
         this.item = item
         this.item2 = item2
         this.matches = matches
     }
 
     fun readDatasetAndProcess() {
-
-        var count = 0
-        var count1 = 0
         try {
             Files.newBufferedReader(Paths.get(PATH)).use { br ->
                 var counter = 0
                 var line: String?
-                Thread.sleep(1000)
-                println(Thread.currentThread().name + " começou.")
                 while ((br.readLine().also { line = it }) != null) {
                     counter++
                     val arrayRatingLine =
@@ -46,12 +44,18 @@ class DatasetReader : Runnable {
 
                     if (words != null) {
                         for (word in words) {
-                            if (LevenshteinDistance.calculateDistance(item!!, word) === 0) {
-                                count++
+                            if (LevenshteinDistance.calculateDistance(item!!, word) == 0) {
+                                lock.lock()
+                                matches!![word] = matches!!.getOrDefault(word, 0) + 1
+                                lock.unlock()
+
                                 println("Match: $item - $word")
                                 break
-                            } else if (LevenshteinDistance.calculateDistance(item2!!, word) === 0) {
-                                count1++
+                            } else if (LevenshteinDistance.calculateDistance(item2!!, word) == 0) {
+                                lock.lock()
+                                matches!![word] = matches!!.getOrDefault(word, 0) + 1
+                                lock.unlock()
+
                                 println("Match: $item2 - $word")
                                 break
                             }
@@ -60,14 +64,13 @@ class DatasetReader : Runnable {
                 }
 
                 println("Count: $counter")
-                save(count, count1)
+                matches?.let { save(it) }
             }
         } catch (e: IOException) {
             throw RuntimeException(e)
-        } catch (e: InterruptedException) {
-            throw RuntimeException(e)
         }
     }
+
 
     override fun run() {
         val startTime = System.currentTimeMillis()
