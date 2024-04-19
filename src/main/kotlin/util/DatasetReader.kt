@@ -1,9 +1,7 @@
 package util
-
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
 
 class DatasetReader {
     private var PATH: String? = null
@@ -15,13 +13,11 @@ class DatasetReader {
     }
 
     companion object {
-        private val lines: List<String>? = null
-
-        fun readDatasetAndProcess(PATH: String?, items: List<String>) {
+        fun readDatasetAndProcess(path: String?, items: List<String>) {
             val matches: MutableMap<String, Int> = HashMap()
 
             try {
-                Files.newBufferedReader(PATH?.let { Paths.get(it) }).use { br ->
+                Files.newBufferedReader(path?.let { Paths.get(it) }).use { br ->
                     var counter = 0
                     var line: String?
                     while ((br.readLine().also { line = it }) != null) {
@@ -30,7 +26,7 @@ class DatasetReader {
                             line?.split(",".toRegex())?.dropLastWhile { it.isEmpty() }
                                 ?.toTypedArray()
                         val rating =
-                            arrayRatingLine?.get(2)?.replace("\"".toRegex(), "")?.lowercase(Locale.getDefault())
+                            arrayRatingLine?.get(2)?.replace("\"".toRegex(), "")?.lowercase()
                         val words =
                             rating?.split(" ".toRegex())?.dropLastWhile { it.isEmpty() }
                                 ?.toTypedArray()
