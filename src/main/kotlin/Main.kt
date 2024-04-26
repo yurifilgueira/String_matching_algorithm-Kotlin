@@ -1,42 +1,33 @@
+
 import util.DatasetReader
+import util.DistanceCalculator
+import util.ResultSaver.save
+import java.io.IOException
+import java.util.*
 
-fun main(args: Array<String>) {
-        val PATH = "resources\\train.csv"
+@Throws(InterruptedException::class, IOException::class)
+fun main() {
+    val threads: MutableList<Thread> = ArrayList()
 
-        val startTime = System.currentTimeMillis()
+    val matches: MutableMap<String, Int> = HashMap()
 
-        val items: List<String> = ArrayList(
-            listOf(
-                "logitech",
-                "keyboard",
-                "mouse",
-                "hyperx",
-                "razer",
-                "lenovo",
-                "acer",
-                "lg",
-                "samsung",
-                "laptop"
-            )
-        )
+    val blocks: Stack<List<String>> = DatasetReader.getBlocks()
 
-        val threads: MutableList<Thread> = ArrayList()
+    println("Starting threads...")
 
-        val matches: MutableMap<String, Int> = HashMap()
+    val startTime = System.currentTimeMillis()
 
-        var i = 0
-        while (i < items.size) {
-            val t = Thread(DatasetReader(items[i], items[++i], matches))
-            t.start()
-            threads.add(t)
-            i++
-        }
+    for (i in 0..5) {
+        val t = Thread(DistanceCalculator(blocks.pop(), matches))
+        threads.add(t)
+        t.start()
+    }
 
-        for (thread in threads) {
-            thread.join()
-        }
+    for (thread in threads) {
+        thread.join()
+    }
 
-        println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 60000)
-        // System.out.println("Count: " + count);
-        matches.forEach { (k: Any, v: Any) -> println("Match: $k - $v") }
- }
+    println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 60000)
+
+    save(matches)
+}
