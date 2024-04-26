@@ -4,6 +4,8 @@ import util.DistanceCalculator
 import util.ResultSaver.save
 import java.io.IOException
 import java.util.*
+import kotlin.concurrent.thread
+
 
 @Throws(InterruptedException::class, IOException::class)
 fun main() {
@@ -18,9 +20,11 @@ fun main() {
     val startTime = System.currentTimeMillis()
 
     for (i in 0..5) {
-        val t = Thread(DistanceCalculator(blocks.pop(), matches))
-        threads.add(t)
-        t.start()
+
+        threads.add(thread (start = true, isDaemon = false, name = String.format("%02d", i), priority = 1) {
+            val t = DistanceCalculator(blocks.pop(), matches)
+            t.calculateDistance()
+        })
     }
 
     for (thread in threads) {

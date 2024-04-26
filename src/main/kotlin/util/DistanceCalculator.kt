@@ -3,7 +3,7 @@ package util
 import util.MatchingComputer.compute
 import java.util.concurrent.locks.ReentrantLock
 
-class DistanceCalculator : Runnable {
+class DistanceCalculator {
     private var lines: List<String>? = null
     private var matches: MutableMap<String, Int>? = null
     private val mutex = ReentrantLock()
@@ -52,9 +52,5 @@ class DistanceCalculator : Runnable {
         }
 
         println(Thread.currentThread().name + " -> finished.")
-    }
-
-    override fun run() {
-        calculateDistance()
     }
 }
