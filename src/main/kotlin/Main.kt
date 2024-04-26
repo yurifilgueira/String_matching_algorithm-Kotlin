@@ -1,26 +1,15 @@
 import util.DatasetReader
+import util.DistanceCalculator
+import java.io.IOException
 
+
+@Throws(IOException::class)
 fun main(args: Array<String>) {
-    val PATH = "resources\\train.csv"
+    val lines: List<String> = DatasetReader.readFile()
 
     val startTime = System.currentTimeMillis()
 
-    val items: List<String> = ArrayList(
-        listOf(
-            "logitech",
-            "keyboard",
-            "mouse",
-            "hyperx",
-            "razer",
-            "lenovo",
-            "acer",
-            "lg",
-            "samsung",
-            "laptop"
-        )
-    )
-
-    DatasetReader.readDatasetAndProcess(PATH, items)
+    DistanceCalculator.calculateDistance(lines)
 
     println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 60000)
 }
