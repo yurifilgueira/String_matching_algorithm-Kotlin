@@ -1,22 +1,15 @@
 package util
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 
 object ResultSaver {
     private const val PATH = "resources\\results.txt"
-    private val mutex = Mutex()
 
-    suspend fun save(matches: MutableMap<String, Int>) {
-        mutex.lock()
+    fun save(matches: MutableMap<String, Int>) {
         try {
-            withContext(Dispatchers.IO) {
-                Files.newBufferedWriter(Paths.get(PATH))
-            }.use { bw ->
+            Files.newBufferedWriter(Paths.get(PATH)).use { bw ->
                 bw.write("Quantity of matches:")
                 bw.newLine()
                 matches.forEach { (k: String, v: Int) ->
@@ -30,8 +23,6 @@ object ResultSaver {
             }
         } catch (e: IOException) {
             throw RuntimeException(e)
-        } finally {
-            mutex.unlock()
         }
     }
 }
