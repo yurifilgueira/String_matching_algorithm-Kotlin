@@ -1,12 +1,10 @@
 package util
 
 import util.MatchingComputer.compute
-import java.util.concurrent.locks.ReentrantLock
 
 class DistanceCalculator {
     private var lines: List<String>? = null
     private var matches: MutableMap<String, Int>? = null
-    private val mutex = ReentrantLock()
 
     constructor()
 
@@ -15,7 +13,7 @@ class DistanceCalculator {
         this.matches = matches
     }
 
-    fun calculateDistance() {
+    suspend fun calculateDistance() {
         val items: List<String> = ArrayList(
             listOf(
                 "logitech",
