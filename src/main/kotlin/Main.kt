@@ -6,7 +6,6 @@ import java.io.IOException
 import java.util.*
 import kotlin.concurrent.thread
 
-
 @Throws(InterruptedException::class, IOException::class)
 fun main() {
     val threads: MutableList<Thread> = ArrayList()
