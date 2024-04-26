@@ -1,10 +1,11 @@
+
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import util.DatasetReader
 import util.DistanceCalculator
-import util.ResultSaver.save
+import util.ResultSaver
 
 fun main() {
 
@@ -27,7 +28,7 @@ fun main() {
         }
     }
 
-    save(matches)
+    ResultSaver.save(matches)
     println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 60000)
     // System.out.println("Count: " + count);
     matches.forEach { (k: Any, v: Any) -> println("Match: $k - $v") }
