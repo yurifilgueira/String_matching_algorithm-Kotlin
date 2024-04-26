@@ -1,17 +1,17 @@
 package util
 
-import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.Mutex
 
 object MatchingComputer {
-    private val semaphore = Semaphore(1)
+    private val mutex = Mutex()
 
     suspend fun compute(word: String?, matches: MutableMap<String, Int>?) {
-        semaphore.acquire()
+        mutex.lock()
         if (matches != null) {
             if (word != null) {
                 matches[word] = matches.getOrDefault(word, 0) + 1
             }
         }
-        semaphore.release()
+        mutex.unlock()
     }
 }
