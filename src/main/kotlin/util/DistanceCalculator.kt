@@ -1,35 +1,18 @@
 package util
 
-import util.MatchingComputer.compute
+import java.util.concurrent.atomic.AtomicInteger
 
 class DistanceCalculator {
     private var lines: List<String>? = null
-    private var matches: MutableMap<String, Int>? = null
-
+    private var counter: AtomicInteger? = null
     constructor()
 
-    constructor(lines: List<String>?, matches: MutableMap<String, Int>?) {
+    constructor(lines: List<String>?, counter: AtomicInteger?) {
         this.lines = lines
-        this.matches = matches
+        this.counter = counter
     }
 
-    suspend fun calculateDistance() {
-        val items: List<String> = ArrayList(
-            listOf(
-                "logitech",
-                "keyboard",
-                "mouse",
-                "hyperx",
-                "razer",
-                "lenovo",
-                "acer",
-                "lg",
-                "samsung",
-                "laptop",
-                "headset",
-                "jbl"
-            )
-        )
+    fun calculateDistance() {
 
         println(Thread.currentThread().name + " -> started.")
 
@@ -39,12 +22,9 @@ class DistanceCalculator {
             val rating = arrayRatingLine[2].replace("\"".toRegex(), "").toLowerCase()
             val words = rating.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-            for (item in items) {
-                for (word in words) {
-                    if (LevenshteinDistance.calculateDistance(word, item) == 0) {
-                        compute(word, matches)
-                        break
-                    }
+            for (word in words) {
+                if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
+                    counter?.incrementAndGet()
                 }
             }
         }
