@@ -1,16 +1,14 @@
 package util
 
-import java.util.concurrent.atomic.AtomicInteger
-
 class DistanceCalculator {
     private var lines: List<String>? = null
-    private var counter: AtomicInteger? = null
+    private var matches: MutableMap<String, Int>? = null
 
     constructor()
 
-    constructor(lines: List<String>?, counter: AtomicInteger?) {
+    constructor(lines: List<String>?, matches: MutableMap<String, Int>?) {
         this.lines = lines
-        this.counter = counter
+        this.matches = matches
     }
 
     suspend fun calculateDistance() {
@@ -24,7 +22,7 @@ class DistanceCalculator {
             val words = rating.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (word in words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
-                    counter?.incrementAndGet()
+                    MatchingComputer.compute(word, matches)
                 }
             }
         }
