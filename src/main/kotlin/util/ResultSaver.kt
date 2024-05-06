@@ -3,23 +3,19 @@ package util
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.concurrent.atomic.AtomicInteger
 
 object ResultSaver {
     private const val PATH = "resources\\results.txt"
 
-    fun save(matches: MutableMap<String, Int>) {
+    fun save(counter: AtomicInteger) {
         try {
             Files.newBufferedWriter(Paths.get(PATH)).use { bw ->
                 bw.write("Quantity of matches:")
                 bw.newLine()
-                matches.forEach { (k: String, v: Int) ->
-                    try {
-                        bw.write("$k -> $v")
-                        bw.newLine()
-                    } catch (e: IOException) {
-                        throw RuntimeException(e)
-                    }
-                }
+
+                bw.write(counter.toString())
+                bw.newLine()
             }
         } catch (e: IOException) {
             throw RuntimeException(e)
