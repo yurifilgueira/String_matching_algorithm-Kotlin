@@ -1,7 +1,9 @@
 package util
 
+import java.util.concurrent.Semaphore
+
 object MatchingComputer {
-    private val semaphore = java.util.concurrent.Semaphore(1)
+    private val semaphore = Semaphore(1)
 
      fun compute(word: String?, matches: MutableMap<String, Int>?) {
         semaphore.acquire()
