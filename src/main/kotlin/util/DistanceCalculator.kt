@@ -26,7 +26,6 @@ class DistanceCalculator {
             for (word in words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
                     compute(word, matches)
-                    break
                 }
             }
         }

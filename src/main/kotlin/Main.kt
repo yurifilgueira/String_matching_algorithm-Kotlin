@@ -31,7 +31,7 @@ fun main() {
         thread.join()
     }
 
-    println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 60000)
+    println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 1000)
 
     save(matches)
 }
