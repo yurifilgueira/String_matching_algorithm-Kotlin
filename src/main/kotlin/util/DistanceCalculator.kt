@@ -16,22 +16,6 @@ class DistanceCalculator {
     }
 
     fun calculateDistance() {
-        val items: List<String> = ArrayList(
-            listOf(
-                "logitech",
-                "keyboard",
-                "mouse",
-                "hyperx",
-                "razer",
-                "lenovo",
-                "acer",
-                "lg",
-                "samsung",
-                "laptop",
-                "headset",
-                "jbl"
-            )
-        )
 
         println(Thread.currentThread().name + " -> started.")
 
@@ -41,12 +25,10 @@ class DistanceCalculator {
             val rating = arrayRatingLine[2].replace("\"".toRegex(), "").toLowerCase()
             val words = rating.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-            for (item in items) {
-                for (word in words) {
-                    if (LevenshteinDistance.calculateDistance(word, item) == 0) {
-                        compute(word, matches)
-                        break
-                    }
+            for (word in words) {
+                if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
+                    compute(word, matches)
+                    break
                 }
             }
         }
