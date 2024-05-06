@@ -29,7 +29,7 @@ fun main() {
     }
 
     ResultSaver.save(matches)
-    println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 60000)
+    println("Total read and print time: " + (System.currentTimeMillis() - startTime).toDouble() / 1000)
     // System.out.println("Count: " + count);
     matches.forEach { (k: Any, v: Any) -> println("Match: $k - $v") }
 }
