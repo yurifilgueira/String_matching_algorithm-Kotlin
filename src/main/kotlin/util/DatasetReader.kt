@@ -5,7 +5,7 @@ import java.io.IOException
 import java.util.*
 
 object DatasetReader {
-    const val PATH: String = "resources\\train.csv"
+    private var PATH: String = "resources\\train.csv"
 
     @Throws(IOException::class)
     fun readFile(): List<String> {
