@@ -1,5 +1,5 @@
 
-import util.DatasetReader
+import readers.Reader
 import util.DistanceCalculator
 import util.ResultSaver.save
 import java.io.IOException
@@ -8,15 +8,16 @@ import kotlin.concurrent.thread
 
 @Throws(InterruptedException::class, IOException::class)
 fun main() {
+
+    val startTime = System.currentTimeMillis()
+
     val threads: MutableList<Thread> = ArrayList()
 
     val matches: MutableMap<String, Int> = HashMap()
 
-    val blocks: Stack<List<String>> = DatasetReader.getBlocks()
+    val blocks: Stack<List<String>> = Reader.getBlocks()
 
     println("Starting threads...")
-
-    val startTime = System.currentTimeMillis()
 
     for (i in 0..5) {
 
