@@ -3,15 +3,16 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import util.DatasetReader
+import readers.Reader
 import util.DistanceCalculator
 import util.ResultSaver
 
 fun main() {
 
-    val blocks = DatasetReader.getBlocks()
-
     val startTime = System.currentTimeMillis()
+
+    val blocks = Reader.getBlocks()
+
     val matches: MutableMap<String, Int> = HashMap()
 
     runBlocking {
