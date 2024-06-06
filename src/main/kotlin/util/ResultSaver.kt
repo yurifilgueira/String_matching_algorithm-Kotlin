@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import java.util.concurrent.atomic.AtomicInteger
 
 object ResultSaver {
-    private  const val PATH = "resources\\results.txt"
+    private  const val PATH = "resources/results.txt"
 
     fun save(counter: AtomicInteger) {
         try {

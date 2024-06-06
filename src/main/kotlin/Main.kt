@@ -1,18 +1,18 @@
-
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import util.DatasetReader
+import readers.Reader
 import util.DistanceCalculator
 import util.ResultSaver
 import java.util.concurrent.atomic.AtomicInteger
 
 fun main() {
 
-    val blocks = DatasetReader.getBlocks()
-
     val startTime = System.currentTimeMillis()
+
+    val blocks = Reader.getBlocks()
+
     val counter: AtomicInteger = AtomicInteger(0)
     runBlocking {
 
