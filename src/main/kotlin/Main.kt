@@ -3,14 +3,14 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import util.DatasetReader
+import readers.Reader
 import util.DistanceCalculator
 import util.ResultSaver
 import java.util.concurrent.Executors
 
 fun main() = runBlocking {
     val startTime = System.currentTimeMillis()
-    val blocks = DatasetReader.getBlocks()
+    val blocks = Reader.getBlocks()
 
     val threadPoolSize = 6
     val dispatcher = Executors.newFixedThreadPool(threadPoolSize).asCoroutineDispatcher()

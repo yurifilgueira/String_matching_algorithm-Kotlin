@@ -16,10 +16,7 @@ class DistanceCalculator : Callable<Int> {
 
         var count = 0
         for (line in lines!!) {
-            val arrayRatingLine = line.split(",".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
-            val rating = arrayRatingLine[2].replace("\"".toRegex(), "").toLowerCase()
-            val words = rating.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val words = line.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             for (word in words) {
                 if (LevenshteinDistance.calculateDistance(word, "mouse") == 0) {
